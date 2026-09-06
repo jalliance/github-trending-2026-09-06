@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>GitHub Trending — 6 September 2026</title>
+<style>
+:root{--bg:#0b0f14;--card:#121821;--line:#243041;--text:#e8eef6;--muted:#93a0b3;--accent:#7dd3fc;--good:#34d399;--warn:#fbbf24}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,sans-serif}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:32px 20px 80px}
+h1{margin:0 0 8px;letter-spacing:-.03em}
+.muted{color:var(--muted)}
+.chips span{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 10px;margin:6px 6px 0 0;font-size:12px;color:var(--muted)}
+input,select{background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:16px 8px 16px 0}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+table{width:100%;border-collapse:collapse;min-width:980px}
+th,td{text-align:left;padding:12px 14px;vertical-align:top;border-bottom:1px solid var(--line)}
+th{font-size:12px;color:var(--muted);background:#0f151d;position:sticky;top:0;text-transform:uppercase}
+.today{color:var(--good);font-weight:650}
+.warn{color:var(--warn)}
+article{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:12px}
+.btn{display:inline-block;border:1px solid var(--line);border-radius:9px;padding:6px 10px;margin:4px 6px 0 0;color:var(--text)}
+.num{font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>GitHub Trending, frozen</h1>
+<p class="muted">Snapshot of <a href="https://github.com/trending">github.com/trending</a> on 6 September 2026 (~11:20 BST). 16 repos. This page does not update, so you can reopen it later.</p>
+<div class="chips"><span>16 repositories</span><span>Any language · Today</span><span>Static · no backend</span><span>Agent-skills heavy day</span></div>
+<input id="q" type="search" placeholder="Filter by name, language, or use case"/>
+<select id="lang"><option value="">All languages</option></select>
+<div class="table-wrap"><table><thead><tr><th>#</th><th>Repository</th><th>Lang</th><th>Stars</th><th>Forks</th><th>Today</th><th>What it does</th><th>Good for</th></tr></thead><tbody id="tbody"></tbody></table></div>
+<h2>Longer notes</h2>
+<div id="cards"></div>
+<p class="muted">exploitarium is a vulnerability-research archive — high-level only, no PoCs here. This page is a briefing, not a deployment of any listed project.</p>
+</div>
+<script>
+const repos=[
+{rank:1,owner:"mattpocock",name:"skills",lang:"Shell",stars:253441,forks:21384,today:2692,url:"https://github.com/mattpocock/skills",try:[["Site","https://aihero.dev/skills"]],does:"Composable coding-agent skills from Matt Pocock (alignment, TDD, spec-first implement, review).",good:"Claude Code / Codex users who want process instead of vibe-coding. Do not install every skill at once."},
+{rank:2,owner:"affaan-m",name:"ECC",lang:"JavaScript",stars:250375,forks:37669,today:1314,url:"https://github.com/affaan-m/ECC",try:[["ecc.tools","https://ecc.tools"]],does:"Kitchen-sink agent harness: skills, instincts, memory, security, research-first workflows.",good:"Teams who want a packaged process across Claude Code, Codex, OpenCode, Cursor. Overkill as a first install; do not stack install paths."},
+{rank:3,owner:"DietrichGebert",name:"ponytail",lang:"JavaScript",stars:128518,forks:6886,today:2845,url:"https://github.com/DietrichGebert/ponytail",try:[["Site","https://ponytail.dev"]],does:"Always-on agent persona: lazy senior, YAGNI first, write less code.",good:"Agents that over-engineer. Can under-build. Conflicts with kitchen-sink skill packs — pick one philosophy."},
+{rank:4,owner:"NousResearch",name:"hermes-agent",lang:"Python",stars:242191,forks:49773,today:575,url:"https://github.com/NousResearch/hermes-agent",try:[["Site","https://hermes-agent.nousresearch.com"]],does:"Persistent personal agent that grows with use; messaging and cron; VPS-oriented.",good:"A standing assistant rather than a coding-session wrapper. Ops and key-management burden is real."},
+{rank:5,owner:"fmtlib",name:"fmt",lang:"C++",stars:25595,forks:3043,today:134,url:"https://github.com/fmtlib/fmt",try:[["fmt.dev","https://fmt.dev"]],does:"Modern C++ formatting library behind std::format.",good:"Real C++ production code. The grown-up library on this list."},
+{rank:6,owner:"anthropics",name:"skills",lang:"Python",stars:174702,forks:20684,today:475,url:"https://github.com/anthropics/skills",try:[["Repo","https://github.com/anthropics/skills"]],does:"Official Anthropic Agent Skills repo and spec, including document skills.",good:"Learning the skills format; Claude docx/pdf/pptx/xlsx workflows. Some document skills are not fully OSS."},
+{rank:7,owner:"cathrynlavery",name:"diagram-design",lang:"HTML",stars:31913,forks:2054,today:855,url:"https://github.com/cathrynlavery/diagram-design",try:[["Demo","https://cathrynlavery.github.io/diagram-design/"]],does:"Editorial HTML+SVG diagram types packaged as an agent skill.",good:"Architecture and process diagrams that should not look like default Mermaid. Not a general diagramming app."},
+{rank:8,owner:"anomalyco",name:"opencode",lang:"TypeScript",stars:204866,forks:26719,today:725,url:"https://github.com/anomalyco/opencode",try:[["opencode.ai","https://opencode.ai"]],does:"Open-source coding agent — the harness, not a skill pack.",good:"People who want an agent they can run or self-host. Same failure modes as any coding agent."},
+{rank:9,owner:"ruvnet",name:"ruflo",lang:"TypeScript",stars:70791,forks:8425,today:136,url:"https://github.com/ruvnet/ruflo",try:[["Repo","https://github.com/ruvnet/ruflo"]],does:"Meta-harness for multi-agent swarms, memory, RAG, and workflow coordination.",good:"Teams that actually need multi-agent orchestration. Huge surface, hype-heavy, some UI still beta."},
+{rank:10,owner:"humanlayer",name:"skills",lang:"TypeScript",stars:2877,forks:82,today:442,url:"https://github.com/humanlayer/skills",try:[["Repo","https://github.com/humanlayer/skills"]],does:"Small Claude Code pack: improve CLAUDE.md, narrow React props, iterated agent loop, design a control loop.",good:"Targeted Claude Code hygiene. Better first skill pack than a 250k-star kitchen sink."},
+{rank:11,owner:"blader",name:"humanizer",lang:"Python",stars:43758,forks:3661,today:990,url:"https://github.com/blader/humanizer",try:[["Repo","https://github.com/blader/humanizer"]],does:"Skill that strips common signs of AI-generated writing from text.",good:"Editing AI drafts you already plan to publish. Not a detector and not an undetectability tool."},
+{rank:12,owner:"BraveOPotato",name:"FckSignups",lang:"TypeScript",stars:3038,forks:203,today:68,url:"https://github.com/BraveOPotato/FckSignups",try:[["nosignups.net","https://nosignups.net"]],does:"Curated list of open-source, in-browser tools that require no account.",good:"Finding a utility without creating another login. A catalogue, not an application."},
+{rank:13,owner:"WorldFlowAI",name:"everything-claude-code",lang:"JavaScript",stars:2463,forks:372,today:95,url:"https://github.com/WorldFlowAI/everything-claude-code",try:[["Repo","https://github.com/WorldFlowAI/everything-claude-code"]],does:"Claude Code toolkit: agents, slash commands, skills, rules, hooks, MCP configs.",good:"Standing up a Claude Code workflow. Do not stack blindly with ECC + mattpocock/skills."},
+{rank:14,owner:"magnitudedev",name:"magnitude",lang:"TypeScript",stars:3366,forks:243,today:674,url:"https://github.com/magnitudedev/magnitude",try:[["magnitude.dev","https://magnitude.dev"]],does:"Local inference server that matches models to your hardware and plugs into existing agents.",good:"Privacy, offline use, cutting API spend — if the machine can run the model."},
+{rank:15,owner:"bikini",name:"exploitarium",lang:"Python",stars:4765,forks:1257,today:230,url:"https://github.com/bikini/exploitarium",try:[],does:"Archive of public exploit PoCs and vulnerability writeups.",good:"Authorized vuln research / defensive triage only. Not deployed here. No how-to."},
+{rank:16,owner:"nvm-sh",name:"nvm",lang:"Shell",stars:94970,forks:10429,today:22,url:"https://github.com/nvm-sh/nvm",try:[["Repo","https://github.com/nvm-sh/nvm"]],does:"POSIX bash script to install and switch Node.js versions.",good:"Everyday Node work. Ignore crypto-ticker junk appended to the GitHub description."}
+];
+function fmt(n){return n.toLocaleString("en-US")}
+function row(r){
+  return `<tr data-hay="${(r.owner+"/"+r.name+" "+r.lang+" "+r.does+" "+r.good).toLowerCase()}" data-lang="${r.lang}">
+    <td class="num">${r.rank}</td>
+    <td><a href="${r.url}">${r.owner}/${r.name}</a></td>
+    <td>${r.lang}</td>
+    <td class="num">${fmt(r.stars)}</td>
+    <td class="num">${fmt(r.forks)}</td>
+    <td class="num today">+${fmt(r.today)}</td>
+    <td>${r.does}</td>
+    <td>${r.good}</td>
+  </tr>`;
+}
+function card(r){
+  const links=r.try.map(([l,u])=>`<a class="btn" href="${u}">${l}</a>`).join("");
+  return `<article data-hay="${(r.owner+"/"+r.name+" "+r.lang+" "+r.does+" "+r.good).toLowerCase()}" data-lang="${r.lang}">
+    <h3>#${r.rank} <a href="${r.url}">${r.owner}/${r.name}</a> · ${r.lang}</h3>
+    <p class="muted">${fmt(r.stars)} stars · ${fmt(r.forks)} forks · <span class="today">+${fmt(r.today)} today</span></p>
+    <p><strong>What it does.</strong> ${r.does}</p>
+    <p><strong>Good for.</strong> ${r.good}</p>
+    ${links}
+  </article>`;
+}
+const tbody=document.getElementById("tbody");
+const cards=document.getElementById("cards");
+const lang=document.getElementById("lang");
+const q=document.getElementById("q");
+[...new Set(repos.map(r=>r.lang))].sort().forEach(l=>{const o=document.createElement("option");o.value=l;o.textContent=l;lang.appendChild(o)});
+function render(){
+  const query=q.value.trim().toLowerCase();
+  const L=lang.value;
+  const shown=repos.filter(r=>(!L||r.lang===L)&&(!query|| (r.owner+"/"+r.name+" "+r.lang+" "+r.does+" "+r.good).toLowerCase().includes(query)));
+  tbody.innerHTML=shown.map(row).join("");
+  cards.innerHTML=shown.map(card).join("");
+}
+q.addEventListener("input",render);
+lang.addEventListener("change",render);
+render();
+</script>
+</body>
+</html>
